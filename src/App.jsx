@@ -11,9 +11,16 @@ function App() {
   const handleEdit = () => {
 
   }
-  const handleDelete = () => {
 
+  const handleDelete = (e,id) => {
+    
+    let newTodos = todos.filter(item=>{
+      return item.id!==id
+    });
+    setTodos(newTodos)
   }
+
+  
   const handleAdd = () => {
     setTodos([...todos, {id: uuidv4(), todo, isCompleted: false }])
     setTodo("")
@@ -37,6 +44,7 @@ function App() {
   
 
 
+
   return (
     <>
       <Navbar />
@@ -50,12 +58,12 @@ function App() {
         <div className="todos">
           {todos.map(item => {
 
-            return <div key={item.id} my-3 className="todo flex w-1/4 justify-between" >
+            return <div key={item.id} my-3 className="todo flex w-1/2 justify-between" >
               <input name={item.id} onChange={handleCheckbox} type="checkbox"  value={todo.isCompleted}/>
               <div className={item.isCompleted ? "line-through" : ""}>{item.todo}</div>
               <div className="buttons">
                 <button onClick={handleEdit} className="bg-violet-800 hover:bg-violet-950 text-white font-bold py-2 px-4  border rounded-xl mx-1 cursor-pointer transition-all">Edit</button>
-                <button onClick={handleDelete} className="bg-violet-800 hover:bg-violet-950 text-white font-bold py-2 px-4  border rounded-xl mx-1 cursor-pointer transition-all">Delete</button>
+                <button onClick={(e)=>handleDelete(e,item.id)} className="bg-violet-800 hover:bg-violet-950 text-white font-bold py-2 px-4  border rounded-xl mx-1 cursor-pointer transition-all">Delete</button>
               </div>
             </div>
           })}
