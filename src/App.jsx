@@ -8,21 +8,28 @@ function App() {
   const [todos, setTodos] = useState([])
 
 
-  const handleEdit = () => {
+
+  const handleEdit = (e, id) => {
+    let t = todos.filter(i => i.id === id)
+    setTodo(t[0].todo);
+    let newTodos = todos.filter(item => {
+      return item.id !== id
+    });
+    setTodos(newTodos)
 
   }
 
-  const handleDelete = (e,id) => {
-    
-    let newTodos = todos.filter(item=>{
-      return item.id!==id
+  const handleDelete = (e, id) => {
+
+    let newTodos = todos.filter(item => {
+      return item.id !== id
     });
     setTodos(newTodos)
   }
 
-  
+
   const handleAdd = () => {
-    setTodos([...todos, {id: uuidv4(), todo, isCompleted: false }])
+    setTodos([...todos, { id: uuidv4(), todo, isCompleted: false }])
     setTodo("")
     console.log(todos)
   }
@@ -32,16 +39,16 @@ function App() {
     setTodo(e.target.value)
   }
 
-  const handleCheckbox  = (e) => {
+  const handleCheckbox = (e) => {
     let id = e.target.name
-    let index = todos.findIndex(item=>{
+    let index = todos.findIndex(item => {
       return item.id === id;
     })
     let newTodos = [...todos];
     newTodos[index].isCompleted = !newTodos[index].isCompleted;
     setTodos(newTodos)
   }
-  
+
 
 
 
@@ -56,14 +63,17 @@ function App() {
         </div>
         <h2 className="text-lg font-bold">Your Todos</h2>
         <div className="todos">
+          {todos.length === 0 && <div>No todos to display</div>}
           {todos.map(item => {
 
             return <div key={item.id} my-3 className="todo flex w-1/2 justify-between" >
-              <input name={item.id} onChange={handleCheckbox} type="checkbox"  value={todo.isCompleted}/>
-              <div className={item.isCompleted ? "line-through" : ""}>{item.todo}</div>
+              <div className="flex gap-5">
+                <input name={item.id} onChange={handleCheckbox} type="checkbox" value={todo.isCompleted} />
+                <div className={item.isCompleted ? "line-through" : ""} >{item.todo}</div>
+              </div>
               <div className="buttons">
-                <button onClick={handleEdit} className="bg-violet-800 hover:bg-violet-950 text-white font-bold py-2 px-4  border rounded-xl mx-1 cursor-pointer transition-all">Edit</button>
-                <button onClick={(e)=>handleDelete(e,item.id)} className="bg-violet-800 hover:bg-violet-950 text-white font-bold py-2 px-4  border rounded-xl mx-1 cursor-pointer transition-all">Delete</button>
+                <button onClick={(e) => handleEdit(e, item.id)} className="bg-violet-800 hover:bg-violet-950 text-white font-bold py-2 px-4  border rounded-xl mx-1 cursor-pointer transition-all">Edit</button>
+                <button onClick={(e) => handleDelete(e, item.id)} className="bg-violet-800 hover:bg-violet-950 text-white font-bold py-2 px-4  border rounded-xl mx-1 cursor-pointer transition-all">Delete</button>
               </div>
             </div>
           })}
